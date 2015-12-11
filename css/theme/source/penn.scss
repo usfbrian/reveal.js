@@ -20,17 +20,29 @@
 // Override theme settings (see ../template/settings.scss)
 $backgroundColor: #EEE;
 
-$mainFont: 'Open Sans', sans-serif;
-$linkColor: #e7ad52;
-$linkColorHover: lighten( $linkColor, 20% );
-$headingFont: 'Montserrat', Impact, sans-serif;
+$headingFont: Georgia, 'Times New Roman', Times, serif;
+$headingColor: #95001a;
 $headingTextShadow: none;
-$headingLetterSpacing: -0.03em;
 $headingTextTransform: none;
-$selectionBackgroundColor: #e7ad52;
+$headingLetterSpacing: -0.03em;
+
+$mainFont: Helvetica, Arial, sans-serif;
+$mainColor: #2b2b2b;
 $mainFontSize: 30px;
+
+$linkColor: #01256e;
+$linkColorHover: lighten( $linkColor, 30% );
+$selectionBackgroundColor: rgba(237, 190, 0, 0.80);
+
 
 
 // Theme template ------------------------------
 @import "../template/theme";
 // ---------------------------------------------
+
+/*
+Override the font color for heading level three
+*/
+.reveal h3 {
+	color: #000;
+}
