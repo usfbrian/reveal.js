@@ -228,6 +228,7 @@
 			'End':					'Last slide',
 			'B  ,  .':				'Pause',
 			'F':					'Fullscreen',
+			'S':					'Speaker notes (if enabled)',
 			'ESC, O':				'Slide overview'
 		};
 
@@ -2553,7 +2554,7 @@
 		if( config.slideNumber && dom.slideNumber ) {
 
 			var value = [];
-			var format = 'h.v';
+			var format = 'c/t';
 
 			// Check if a custom number format is available
 			if( typeof config.slideNumber === 'string' ) {
