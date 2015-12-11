@@ -99,7 +99,14 @@
 				.speaker-controls-time .timer,
 				.speaker-controls-time .clock {
 					width: 50%;
+					font-size: 2.3em;
+				}
+
+				.speaker-controls-time .slide-timer {
+					color: #c00;
+					width: 50%;
 					font-size: 1.9em;
+					float: left;
 				}
 
 				.speaker-controls-time .timer {
@@ -163,6 +170,9 @@
 				<div class="timer">
 					<span class="hours-value">00</span><span class="minutes-value">:00</span><span class="seconds-value">:00</span>
 				</div>
+				<div class="slide-timer">
+					<span class="slide-minutes-value">00</span><span class="slide-seconds-value">:00</span>
+				</div>
 				<div class="clear"></div>
 			</div>
 
@@ -182,6 +192,7 @@
 					currentState,
 					currentSlide,
 					upcomingSlide,
+          changeMe,
 					connected = false;
 
 				window.addEventListener( 'message', function( event ) {
@@ -206,6 +217,7 @@
 						else if( /slidechanged|fragmentshown|fragmenthidden|overviewshown|overviewhidden|paused|resumed/.test( data.eventName ) && currentState !== JSON.stringify( data.state ) ) {
 							window.opener.postMessage( JSON.stringify({ method: 'setState', args: [ data.state ]} ), '*' );
 						}
+            if ( /slidechanged/.test( data.eventName ) ) { changeMe = 1; } else { changeMe = 0; }
 					}
 
 				} );
@@ -329,9 +341,13 @@
 						minutesEl = timeEl.querySelector( '.minutes-value' ),
 						secondsEl = timeEl.querySelector( '.seconds-value' );
 
+					var startSlide = new Date(),
+						minutesElSlide = timeEl.querySelector( '.slide-minutes-value' ),
+						secondsElSlide = timeEl.querySelector( '.slide-seconds-value' );
+
 					function _updateTimer() {
 
-						var diff, hours, minutes, seconds,
+						var diff, hours, minutes, seconds, diffSlide, minutesSlide, secondsSlide,
 							now = new Date();
 
 						diff = now.getTime() - start.getTime();
@@ -339,12 +355,25 @@
 						minutes = Math.floor( ( diff / ( 1000 * 60 ) ) % 60 );
 						seconds = Math.floor( ( diff / 1000 ) % 60 );
 
+						diffSlide = now.getTime() - startSlide.getTime();
+						minutesSlide = Math.floor( ( diffSlide / ( 1000 * 60 ) ) % 60 );
+						secondsSlide = Math.floor( ( diffSlide / 1000 ) % 60 );
+
 						clockEl.innerHTML = now.toLocaleTimeString( 'en-US', { hour12: true, hour: '2-digit', minute:'2-digit' } );
 						hoursEl.innerHTML = zeroPadInteger( hours );
 						hoursEl.className = hours > 0 ? '' : 'mute';
 						minutesEl.innerHTML = ':' + zeroPadInteger( minutes );
 						minutesEl.className = minutes > 0 ? '' : 'mute';
 						secondsEl.innerHTML = ':' + zeroPadInteger( seconds );
+
+						minutesElSlide.innerHTML = zeroPadInteger( minutesSlide );
+						minutesElSlide.className = minutes > 0 ? '' : 'mute';
+						secondsElSlide.innerHTML = ':' + zeroPadInteger( secondsSlide );
+
+            if (changeMe == 1) {
+              changeMe = 0;
+              startSlide = new Date();
+            }
 
 					}
 

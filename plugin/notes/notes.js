@@ -82,7 +82,9 @@ var RevealNotes = (function() {
 		function onConnected() {
 
 			// Monitor events that trigger a change in state
-			Reveal.addEventListener( 'slidechanged', post );
+			Reveal.addEventListener( 'slidechanged', function( event ) {
+        post();
+      } );
 			Reveal.addEventListener( 'fragmentshown', post );
 			Reveal.addEventListener( 'fragmenthidden', post );
 			Reveal.addEventListener( 'overviewhidden', post );
